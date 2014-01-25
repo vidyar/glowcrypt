@@ -1,0 +1,3 @@
+<project name="cli" basedir=".">
+	<import file="../../common.xml" />
+</project>

@@ -1,0 +1,70 @@
+<project name="glowcrypt" default="dist" basedir=".">
+
+	<property name="build.dir" value="build" />
+	<property name="dist.dir" value="${build.dir}/dist" />
+
+
+	<macrodef name="iterate">
+		<attribute name="target" />
+		<sequential>
+			<subant target="@{target}">
+				<!-- Listing these here individually to make sure that they are
+				   - compiled in the correct order -->
+				<fileset dir="modules/core" includes="build.xml" />
+				<fileset dir="modules/cli" includes="build.xml" />
+			</subant>
+		</sequential>
+	</macrodef>
+
+	<macrodef name="glowcryptant">
+		<!-- This macro has two uses:
+		   - (1) Print info about what module a target is from when building
+		   - (2) Assures the modules' build files are not executed on their own
+		   -     because they'd lack this macro -->
+		<sequential>
+			<echo message="+++ at ${ant.project.name}" />
+		</sequential>
+	</macrodef>
+
+	<macrodef name="TODO">
+		<sequential>
+			<echo message="-!- TODO: not yet implemented" />
+		</sequential>
+	</macrodef>
+
+
+	<target name="init">
+		<glowcryptant />
+		<mkdir dir="${build.dir}" />
+		<iterate target="init" />
+	</target>
+
+	<target name="compile" depends="init">
+		<glowcryptant />
+		<iterate target="compile" />
+	</target>
+
+	<target name="dist" depends="compile">
+		<glowcryptant />
+		<TODO />
+	</target>
+
+	<target name="debug">
+		<glowcryptant />
+		<iterate target="debug" />
+	</target>
+
+	<target name="clean">
+		<glowcryptant />
+		<!-- Deletes compiled files -->
+		<delete dir="${dist.dir}" />
+		<iterate target="clean" />
+	</target>
+	<target name="clean-all" depends="clean">
+		<glowcryptant />
+		<!-- Delete all generated build files -->
+		<delete dir="${build.dir}" />
+		<iterate target="clean-all" />
+	</target>
+
+</project>
