@@ -2,6 +2,10 @@ Glowcrypt
 =========
 ...because privacy matters!
 
+Build Status
+------------
+master: [![Build Status](https://travis-ci.org/xnrand/glowcrypt.png?branch=master)](https://travis-ci.org/xnrand/glowcrypt)
+
 What it is
 ----------
 Glowcrypt is meant to be an easy cross-platform encryption and decryption utility.
