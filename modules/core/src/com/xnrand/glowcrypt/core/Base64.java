@@ -1,5 +1,6 @@
 package com.xnrand.glowcrypt.core;
 
+@SuppressWarnings("all")
 /*
  * Robert Harder's Base64 library which he released under public domain. 
  * 
