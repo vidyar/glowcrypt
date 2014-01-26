@@ -4,4 +4,7 @@ jdk:
   - openjdk7
   - openjdk6
   - oraclejdk7
-
+notifications:
+  webhooks:
+    urls:
+      secure: "XKGLwS1vTFSR2Ew3CsGulgZkRl8FWmTwG5k+JR6GR5a9qp/5l6Y6N+OagfbFHYykpi5LpaWxPiVxGQhXIZoGuuyBQoW/rYEOV4GNaOS0TfP8+tH2Y0SpLU8k72k2dHpFsPjtXOkPa9hpxL+fdUW9fgOodAqkMAT6X0kCYqSWkzo="
