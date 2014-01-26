@@ -8,4 +8,4 @@ Glowcrypt is meant to be an easy cross-platform encryption and decryption utilit
 
 Building
 --------
-Glowcrypt is written in java and uses ant for building. You will need the Java Developlent Toolkit and Apache ant installed to build Glowcrypt.
+Glowcrypt is written in java and uses ant for building. You will need the Java Development Toolkit and Apache ant installed to build Glowcrypt.
