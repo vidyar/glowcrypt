@@ -142,8 +142,8 @@
 	</target>
 
 	<target name="dist" depends="compile">
-		<glowcryptant />
 		<iterate target="dist" />
+		<glowcryptant />
 		<!-- distributables with multiple modules (runnable jars, etc.) here -->
 	</target>
 
@@ -153,9 +153,9 @@
 		<iterate target="clean" />
 	</target>
 	<target name="clean-all" depends="clean">
-		<glowcryptant />
 		<!-- Deletes all generated build files -->
 		<iterate target="clean-all" />
+		<glowcryptant />
 		<delete dir="${build.dir}" />
 		<delete dir="${dist.dir}" />
 	</target>
