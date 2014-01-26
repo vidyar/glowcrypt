@@ -5,6 +5,8 @@ import java.security.Key;
 /**
  * abstract class for all wrapped keys in glowcrypt, aiming to be more
  * convenient than java.security.*
+ * 
+ * @author xnrand <http://xnrand.com> <https://github.com/xnrand>
  */
 public abstract class GlowKey<T extends Key> {
 	protected final int keylen;
@@ -42,7 +44,7 @@ public abstract class GlowKey<T extends Key> {
 	public T getKey() {
 		return key;
 	}
-	
+
 	// TODO: method to get key from byte[] array [abstract?]
 	// TODO: method to get Base64 String from key (own key format?) [abstract?]
 	// TODO: method to get key from Base64 String (own key format?) [abstract?]

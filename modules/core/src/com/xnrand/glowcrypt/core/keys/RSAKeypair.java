@@ -7,6 +7,8 @@ import java.security.NoSuchAlgorithmException;
 /**
  * Class for an RSA keypair in glowcrypt, aiming to be more convenient than
  * java.security.*
+ * 
+ * @author xnrand <http://xnrand.com> <https://github.com/xnrand>
  */
 public final class RSAKeypair {
 	private final int keylen;

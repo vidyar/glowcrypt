@@ -4,6 +4,8 @@ import java.security.PrivateKey;
 
 /**
  * Class for an RSA private key in glowcrypt
+ * 
+ * @author xnrand <http://xnrand.com> <https://github.com/xnrand>
  */
 public final class RSAPrivateKey extends GlowKey<PrivateKey> {
 
@@ -11,5 +13,4 @@ public final class RSAPrivateKey extends GlowKey<PrivateKey> {
 		super(keylen, key);
 	}
 
-	
 }

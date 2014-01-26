@@ -4,6 +4,8 @@ import java.security.PublicKey;
 
 /**
  * Class for an RSA private key in glowcrypt
+ * 
+ * @author xnrand <http://xnrand.com> <https://github.com/xnrand>
  */
 public final class RSAPublicKey extends GlowKey<PublicKey> {
 
