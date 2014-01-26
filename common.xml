@@ -1,42 +1,44 @@
 <project>
-	<!-- This fill will be <import>ed by the modules' build.xml. -->
-	<property name="src.dir" value="src" />
-	<property name="build.dir" value="build" />
-	<property name="classes.dir" value="${build.dir}/classes" />
+	
+	<!-- This fill will be <import>ed by the modules' build.xml. 
+	   - The property names are module.* to prevent them from interfering with
+	   - global properties. -->
+	<property name="module.src.dir" value="src" />
+	<property name="module.build.dir" value="build" />
+	<property name="module.classes.dir" value="${module.build.dir}/classes" />
+	<property name="module.dist.dir" value="../../${dist.dir}/${ant.project.name}" />
 
 
 	<target name="init">
 		<glowcryptant />
-		<mkdir dir="${build.dir}" />
+		<mkdir dir="${module.build.dir}" />
 	</target>
 
 	<target name="compile">
 		<glowcryptant />
-		<mkdir dir="${classes.dir}" />
-		<javac srcdir="${src.dir}" destdir="${classes.dir}" includeantruntime="false">
+		<mkdir dir="${module.classes.dir}" />
+		<javac srcdir="${module.src.dir}" destdir="${module.classes.dir}" includeantruntime="false">
 			<classpath>
 				<pathelement path="../core/build/classes" />
 			</classpath>
 		</javac>
 	</target>
 
-	<target name="debug">
-		<glowcryptant />
-	</target>
-
 	<target name="dist">
+		<mkdir dir="${module.dist.dir}"/>
 		<glowcryptant />
 		<TODO />
 	</target>
 
 	<target name="clean">
 		<glowcryptant />
-		<!-- Deletes compiled files -->
-		<delete dir="${classes.dir}" />
+		<!-- Deletes compiled class files -->
+		<delete dir="${module.classes.dir}" />
 	</target>
 	<target name="clean-all">
 		<glowcryptant />
 		<!-- Delete all generated build files -->
-		<delete dir="${build.dir}" />
+		<delete dir="${module.build.dir}" />
+		<delete dir="${module.dist.dir}" />
 	</target>
 </project>

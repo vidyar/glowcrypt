@@ -1,5 +1,13 @@
 <project name="glowcrypt" default="dist" basedir=".">
 
+	<taskdef resource="net/sf/antcontrib/antlib.xml">
+		<!-- this project depends on ant-contrib -->
+		<classpath>
+			<pathelement location="/usr/share/java/ant-contrib.jar" />
+		</classpath>
+	</taskdef>
+
+
 	<property name="build.dir" value="build" />
 	<property name="dist.dir" value="${build.dir}/dist" />
 
@@ -35,6 +43,98 @@
 
 	<target name="init">
 		<glowcryptant />
+		<if>
+			<!-- Git handling -->
+			<available file=".git" type="dir" />
+			<then>
+				<echo message="Git repository detected." />
+				<trycatch>
+					<try>
+						<!-- Determine git commit timestamp -->
+						<exec executable="git" outputproperty="git.timestamp" failifexecutionfails="true">
+							<arg value="show" />
+							<arg value="--format=format:%ci" />
+							<redirector>
+								<outputfilterchain>
+									<headfilter lines="1" />
+									<replaceregex pattern="^(....)-(..)-(..) (..):(..):(..) .....$" replace="\1\2\3.\4\5\6" />
+								</outputfilterchain>
+							</redirector>
+						</exec>
+						<!-- Determine git commit hash -->
+						<exec executable="git" outputproperty="git.id" failifexecutionfails="true">
+							<arg value="rev-parse" />
+							<arg value="HEAD" />
+							<redirector>
+								<outputfilterchain>
+									<replaceregex pattern="^(.........).*$" replace="-\1" />
+								</outputfilterchain>
+							</redirector>
+						</exec>
+						<!-- Determine git branch -->
+						<exec executable="git" outputproperty="git.branch.raw" resultproperty="git.branch.status" failifexecutionfails="true">
+							<arg value="symbolic-ref" />
+							<arg value="HEAD" />
+							<redirector>
+								<outputfilterchain>
+									<replaceregex pattern="^refs/heads/" replace="" />
+								</outputfilterchain>
+							</redirector>
+						</exec>
+						<if>
+							<equals arg1="${git.branch.status}" arg2="0" />
+							<then>
+								<property name="git.branch" value="-${git.branch.raw}" />
+							</then>
+							<else>
+								<echo message="git HEAD seems to be detached, cannot detect branch"/>
+								<property name="git.branch" value="-nobranch" />
+							</else>
+						</if>
+						<!-- Determine whether source has been changed locally -->
+						<exec executable="git" resultproperty="git.diff.status" failonerror="false" failifexecutionfails="true">
+							<arg value="diff" />
+							<arg value="--quiet" />
+							<arg value="HEAD" />
+						</exec>
+						<if>
+							<equals arg1="${git.diff.status}" arg2="0" />
+							<then>
+								<echo message="'git diff --quiet HEAD' returned 0, no uncommited changes in tracked files" />
+								<property name="git.changes" value="" />
+							</then>
+							<elseif>
+								<equals arg1="${git.diff.status}" arg2="1" />
+								<then>
+									<echo message="'git diff --quiet HEAD' returned 1, there are uncommited changes in tracked files" />
+									<property name="git.changes" value="-custom" />
+								</then>
+							</elseif>
+							<else>
+								<echo message="'git diff --quiet HEAD' returned ${git.diff.status}, change state unknown" />
+								<property name="git.changes" value="-unknown" />
+							</else>
+						</if>
+					</try>
+					<catch>
+						<echo message="Error while executing git! Is git installed?" />
+						<property name="git.timestamp" value="giterr" />
+						<property name="git.id" value="" />
+						<property name="git.changes" value="" />
+						<property name="git.branch" value="" />
+					</catch>
+				</trycatch>
+			</then>
+			<else>
+				<echo message="No git repository detected!" />
+				<property name="git.timestamp" value="nogit" />
+				<property name="git.id" value="" />
+				<property name="git.changes" value="" />
+				<property name="git.branch" value="" />
+			</else>
+		</if>
+		<property name="git.info" value="${git.timestamp}${git.id}${git.branch}${git.changes}" />
+		<echo message="git state information: ${git.info}" />
 		<mkdir dir="${build.dir}" />
 		<iterate target="init" />
 	</target>
@@ -49,22 +149,17 @@
 		<TODO />
 	</target>
 
-	<target name="debug">
-		<glowcryptant />
-		<iterate target="debug" />
-	</target>
-
 	<target name="clean">
 		<glowcryptant />
-		<!-- Deletes compiled files -->
-		<delete dir="${dist.dir}" />
+		<!-- Deletes compiled class files -->
 		<iterate target="clean" />
 	</target>
 	<target name="clean-all" depends="clean">
 		<glowcryptant />
-		<!-- Delete all generated build files -->
-		<delete dir="${build.dir}" />
+		<!-- Deletes all generated build files -->
 		<iterate target="clean-all" />
+		<delete dir="${build.dir}" />
+		<delete dir="${dist.dir}" />
 	</target>
 
 </project>
