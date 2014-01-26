@@ -9,7 +9,9 @@ import java.security.PublicKey;
  */
 public final class RSAPublicKey extends GlowKey<PublicKey> {
 
+	protected static final int type = RSAPUBLICKEY;
+	
 	protected RSAPublicKey(int keylen, PublicKey key) {
-		super(keylen, key);
+		super(keylen, key, type);
 	}
 }

@@ -9,8 +9,10 @@ import java.security.PrivateKey;
  */
 public final class RSAPrivateKey extends GlowKey<PrivateKey> {
 
+	protected static final int type = RSAPRIVATEKEY;
+	
 	protected RSAPrivateKey(int keylen, PrivateKey key) {
-		super(keylen, key);
+		super(keylen, key, type);
 	}
 
 }

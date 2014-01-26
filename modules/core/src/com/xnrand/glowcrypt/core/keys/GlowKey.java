@@ -1,5 +1,8 @@
 package com.xnrand.glowcrypt.core.keys;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.security.Key;
 
 /**
@@ -11,6 +14,14 @@ import java.security.Key;
 public abstract class GlowKey<T extends Key> {
 	protected final int keylen;
 	protected final T key;
+	protected final int keytype;
+	
+	/** should <em>never</em> be changed because it will break saved keys */
+	protected static final int AESKEY = 1;
+	/** should <em>never</em> be changed because it will break saved keys */
+	protected static final int RSAPRIVATEKEY = 2;
+	/** should <em>never</em> be changed because it will break saved keys */
+	protected static final int RSAPUBLICKEY = 3;
 
 	/**
 	 * Creates the key object from the {@link java.security.Key} object and the
@@ -19,9 +30,10 @@ public abstract class GlowKey<T extends Key> {
 	 * @param keylen
 	 * @param key
 	 */
-	protected GlowKey(int keylen, T key) {
+	protected GlowKey(int keylen, T key, int type) {
 		this.keylen = keylen;
 		this.key = key;
+		this.keytype = type;
 	}
 
 	/**
@@ -45,7 +57,15 @@ public abstract class GlowKey<T extends Key> {
 		return key;
 	}
 
-	// TODO: method to get key from byte[] array [abstract?]
-	// TODO: method to get Base64 String from key (own key format?) [abstract?]
-	// TODO: method to get key from Base64 String (own key format?) [abstract?]
+	/**
+	 * write the key in glowcrypt's format to an {@link OutputStream}
+	 */
+	public void writeGlowKey(OutputStream os) throws IOException {
+		DataOutputStream dos = new DataOutputStream(os);
+		dos.writeInt(keytype);
+		dos.write(keylen);
+		byte[] keyBytes = getBytes();
+		dos.write(keyBytes.length);
+		dos.write(keyBytes);
+	}
 }

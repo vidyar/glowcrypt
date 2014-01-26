@@ -30,7 +30,7 @@ public final class RSAKeypair {
 	 * @return the keypair
 	 * @throws NoSuchAlgorithmException
 	 */
-	public RSAKeypair generate(int keylen) throws NoSuchAlgorithmException {
+	public static RSAKeypair generate(int keylen) throws NoSuchAlgorithmException {
 		KeyPairGenerator kgen = KeyPairGenerator.getInstance("RSA");
 		kgen.initialize(keylen);
 		KeyPair kpair = kgen.generateKeyPair();
