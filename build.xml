@@ -16,6 +16,9 @@
 		<attribute name="target" />
 		<sequential>
 			<subant target="@{target}">
+				<propertyset>
+					<propertyref regex=".*" />
+				</propertyset>
 				<!-- Listing these here individually to make sure that they are
 				   - compiled in the correct order -->
 				<fileset dir="modules/core" includes="build.xml" />
@@ -31,12 +34,6 @@
 		   -     because they'd lack this macro -->
 		<sequential>
 			<echo message="+++ at ${ant.project.name}" />
-		</sequential>
-	</macrodef>
-
-	<macrodef name="TODO">
-		<sequential>
-			<echo message="-!- TODO: not yet implemented" />
 		</sequential>
 	</macrodef>
 
@@ -87,7 +84,7 @@
 								<property name="git.branch" value="-${git.branch.raw}" />
 							</then>
 							<else>
-								<echo message="git HEAD seems to be detached, cannot detect branch"/>
+								<echo message="HEAD seems to be detached (was 'git checkout &lt;commithash&gt;' used?), cannot detect current branch" />
 								<property name="git.branch" value="-nobranch" />
 							</else>
 						</if>
@@ -146,7 +143,8 @@
 
 	<target name="dist" depends="compile">
 		<glowcryptant />
-		<TODO />
+		<iterate target="dist" />
+		<!-- distributables with multiple modules (runnable jars, etc.) here -->
 	</target>
 
 	<target name="clean">

@@ -1,12 +1,13 @@
 <project>
-	
+
 	<!-- This fill will be <import>ed by the modules' build.xml. 
 	   - The property names are module.* to prevent them from interfering with
 	   - global properties. -->
 	<property name="module.src.dir" value="src" />
 	<property name="module.build.dir" value="build" />
 	<property name="module.classes.dir" value="${module.build.dir}/classes" />
-	<property name="module.dist.dir" value="../../${dist.dir}/${ant.project.name}" />
+	<property name="module.global.dist.dir" value="../../${dist.dir}" />
+	<property name="module.local.dist.dir" value="${module.global.dist.dir}/${ant.project.name}" />
 
 
 	<target name="init">
@@ -25,9 +26,11 @@
 	</target>
 
 	<target name="dist">
-		<mkdir dir="${module.dist.dir}"/>
+		<mkdir dir="${module.global.dist.dir}" />
 		<glowcryptant />
-		<TODO />
+		<jar jarfile="${module.global.dist.dir}/glowcrypt-${ant.project.name}-${git.info}.jar">
+			<fileset dir="${module.classes.dir}" />
+		</jar>
 	</target>
 
 	<target name="clean">
@@ -39,6 +42,6 @@
 		<glowcryptant />
 		<!-- Delete all generated build files -->
 		<delete dir="${module.build.dir}" />
-		<delete dir="${module.dist.dir}" />
+		<delete dir="${module.global.dist.dir}" />
 	</target>
 </project>
