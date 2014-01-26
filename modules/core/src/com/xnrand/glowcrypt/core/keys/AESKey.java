@@ -43,7 +43,7 @@ public class AESKey extends GlowKey<SecretKey> {
 	}
 	
 	/**
-	 * get {@link AESKey} from an {@link InputStream}
+	 * get {@link AESKey} from an {@link InputStream} in glowcrypt's key format
 	 */
 	public static AESKey readGlowKey(InputStream is) throws IOException, InvalidKeyException {
 		DataInputStream dis = new DataInputStream(is);

@@ -68,4 +68,6 @@ public abstract class GlowKey<T extends Key> {
 		dos.write(keyBytes.length);
 		dos.write(keyBytes);
 	}
+	
+	
 }
