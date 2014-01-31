@@ -1,5 +1,8 @@
 package com.xnrand.glowcrypt.cli.dev;
 
+import java.io.InputStream;
+import java.io.PrintStream;
+
 import com.xnrand.glowcrypt.core.Base64;
 import com.xnrand.glowcrypt.core.Glowcrypt;
 import com.xnrand.glowcrypt.core.keys.AESKey;
@@ -19,45 +22,53 @@ import com.xnrand.glowcrypt.core.keys.RSAPublicKey;
 public class DevCLI {
 
 	private final String[] args;
+	private final InputStream in;
+	private final PrintStream out;
+	@SuppressWarnings("unused")
+	private final PrintStream err;
 
-	private DevCLI(String[] args) {
+	protected DevCLI(String[] args, InputStream in, PrintStream out,
+			PrintStream err) {
 		this.args = args;
+		this.in = in;
+		this.out = out;
+		this.err = err;
 	}
 
 	public static void main(String[] args) throws Exception {
-		System.out.println(Glowcrypt.INFO);
-		new DevCLI(args).devcli();
+		new DevCLI(args, System.in, System.out, System.err).devcli();
 	}
 
-	private void devcli() throws Exception {
+	protected void devcli() throws Exception {
+		out.println(Glowcrypt.INFO);
 		minArgs(1);
 		switch (args[0]) {
 		case "keygen":
 			numArgs(3);
-			Base64.OutputStream genout = new Base64.OutputStream(System.out,
+			Base64.OutputStream genout = new Base64.OutputStream(out,
 					Base64.ENCODE);
 			switch (args[1]) {
 			case "rsa":
 				RSAKeypair genkeypair = RSAKeypair.generate(Integer
 						.parseInt(args[2]));
-				System.out.println("Private:");
-				System.out.println(genkeypair.getPrivateKey().getBytes().length
+				out.println("Private:");
+				out.println(genkeypair.getPrivateKey().getBytes().length
 						+ " bytes");
 				genkeypair.getPrivateKey().writeGlowKey(genout);
 				genout.flushBase64();
-				System.out.println("\nPublic:");
-				System.out.println(genkeypair.getPublicKey().getBytes().length
+				out.println("\nPublic:");
+				out.println(genkeypair.getPublicKey().getBytes().length
 						+ " bytes");
 				genkeypair.getPublicKey().writeGlowKey(genout);
 				genout.flushBase64();
-				System.out.println();
+				out.println();
 				break;
 			case "aes":
 				AESKey genaeskey = AESKey.generate(Integer.parseInt(args[2]));
-				System.out.println(genaeskey.getBytes().length + " bytes");
+				out.println(genaeskey.getBytes().length + " bytes");
 				genaeskey.writeGlowKey(genout);
 				genout.flushBase64();
-				System.out.println();
+				out.println();
 				break;
 			default:
 				unknownCommand("keygen");
@@ -65,25 +76,27 @@ public class DevCLI {
 			break;
 		case "readkey":
 			minArgs(2);
-			Base64.InputStream readin = new Base64.InputStream(System.in);
+			Base64.InputStream readin = new Base64.InputStream(in);
 			switch (args[1]) {
 			case "rsa":
 				numArgs(3);
 				switch (args[2]) {
 				case "private":
-					RSAPrivateKey readrsaprivatekey = RSAPrivateKey.readGlowKey(readin);
-					System.out.println("Keylen " + readrsaprivatekey.getKeylen());
+					RSAPrivateKey readrsaprivatekey = RSAPrivateKey
+							.readGlowKey(readin);
+					out.println("Keylen " + readrsaprivatekey.getKeylen());
 					break;
 				case "public":
-					RSAPublicKey readrsapublickey = RSAPublicKey.readGlowKey(readin);
-					System.out.println("Keylen " + readrsapublickey.getKeylen());
+					RSAPublicKey readrsapublickey = RSAPublicKey
+							.readGlowKey(readin);
+					out.println("Keylen " + readrsapublickey.getKeylen());
 					break;
 				}
 				break;
 			case "aes":
 				numArgs(2);
 				AESKey readaeskey = AESKey.readGlowKey(readin);
-				System.out.println("Keylen " + readaeskey.getKeylen());
+				out.println("Keylen " + readaeskey.getKeylen());
 				break;
 			default:
 				unknownCommand("readkey");
@@ -94,6 +107,15 @@ public class DevCLI {
 			break;
 		case "decrypt":
 			// TODO: decryption
+			break;
+		case "help":
+			out.println("" + //
+					"<> keygen rsa <keylen>\n" + //
+					"<> keygen aes <keylen>\n" + //
+					"<> readkey rsa private\n" + //
+					"<> readkey rsa public\n" + //
+					"<> readkey aes\n" + //
+					"<> help");
 			break;
 		default:
 			unknownCommand("main");
