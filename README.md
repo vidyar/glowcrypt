@@ -20,7 +20,7 @@ master: [![Build Status](https://travis-ci.org/xnrand/glowcrypt.png?branch=maste
 Building
 --------
 Glowcrypt is written in java and uses ant for building. You will need
-a Java Development Toolkit, [Apache Ant][ant] and [Ant-Contrib][ant-contrib]
+a Java 7 Development Toolkit, [Apache Ant][ant] and [Ant-Contrib][ant-contrib]
 installed to build glowcrypt.
 
 [ant]: https://ant.apache.org/

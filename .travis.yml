@@ -2,7 +2,6 @@ language: java
 script: ant dist
 jdk:
   - openjdk7
-  - openjdk6
   - oraclejdk7
 notifications:
   webhooks:
