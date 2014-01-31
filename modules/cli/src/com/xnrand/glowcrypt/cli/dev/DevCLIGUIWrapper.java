@@ -94,6 +94,8 @@ public class DevCLIGUIWrapper extends JFrame {
 
 		txtrInput = new JTextArea();
 		txtrInput.setText("Input");
+		txtrOutput.setLineWrap(true);
+		txtrOutput.setWrapStyleWord(false);
 		spInput.setViewportView(txtrInput);
 	}
 
