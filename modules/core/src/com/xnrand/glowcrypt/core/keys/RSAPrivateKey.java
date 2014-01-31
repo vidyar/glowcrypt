@@ -7,14 +7,14 @@ import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.spec.InvalidKeySpecException;
-import java.security.spec.X509EncodedKeySpec;
+import java.security.spec.PKCS8EncodedKeySpec;
 
 import com.xnrand.glowcrypt.core.Base64.InputStream;
 
 /**
  * Class for an RSA private key in glowcrypt
  * 
- * @author xnrand <http://xnrand.com> <https://github.com/xnrand>
+ * @author xnrand <http://xnrand.com/> <https://github.com/xnrand>
  */
 public final class RSAPrivateKey extends GlowKey<PrivateKey> {
 
@@ -29,7 +29,7 @@ public final class RSAPrivateKey extends GlowKey<PrivateKey> {
 	 */
 	public static RSAPrivateKey fromBytes(int keylen, byte[] keyBytes)
 			throws InvalidKeySpecException, NoSuchAlgorithmException {
-		X509EncodedKeySpec keySpec = new X509EncodedKeySpec(keyBytes);
+		PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(keyBytes);
 		PrivateKey privateKey = KeyFactory.getInstance("RSA").generatePrivate(
 				keySpec);
 		return new RSAPrivateKey(keylen, privateKey);
@@ -47,7 +47,7 @@ public final class RSAPrivateKey extends GlowKey<PrivateKey> {
 		byte[] bytes = new byte[byteslen];
 		dis.readFully(bytes);
 		if (keytype != type) {
-			throw new InvalidKeyException();
+			throw new InvalidKeyException("wrong glowcrypt key type");
 		}
 		return fromBytes(keylen, bytes);
 	}

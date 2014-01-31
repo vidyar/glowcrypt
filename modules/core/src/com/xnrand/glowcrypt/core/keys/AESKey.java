@@ -14,10 +14,10 @@ import com.xnrand.glowcrypt.core.Base64.InputStream;
 /**
  * Class for an AES key in glowcrypt
  * 
- * @author xnrand <http://xnrand.com> <https://github.com/xnrand>
+ * @author xnrand <http://xnrand.com/> <https://github.com/xnrand>
  */
 public class AESKey extends GlowKey<SecretKey> {
-	
+
 	protected static final int type = AESKEY;
 
 	protected AESKey(int keylen, SecretKey key) {
@@ -33,7 +33,7 @@ public class AESKey extends GlowKey<SecretKey> {
 		SecretKey secretKey = kgen.generateKey();
 		return new AESKey(keylen, secretKey);
 	}
-	
+
 	/**
 	 * get {@link AESKey} from keylen and encoded key data
 	 */
@@ -41,11 +41,12 @@ public class AESKey extends GlowKey<SecretKey> {
 		SecretKey secretKey = new SecretKeySpec(keyBytes, "AES");
 		return new AESKey(keylen, secretKey);
 	}
-	
+
 	/**
 	 * get {@link AESKey} from an {@link InputStream} in glowcrypt's key format
 	 */
-	public static AESKey readGlowKey(InputStream is) throws IOException, InvalidKeyException {
+	public static AESKey readGlowKey(InputStream is) throws IOException,
+			InvalidKeyException {
 		DataInputStream dis = new DataInputStream(is);
 		int keytype = dis.readInt();
 		int keylen = dis.readInt();
@@ -53,7 +54,7 @@ public class AESKey extends GlowKey<SecretKey> {
 		byte[] bytes = new byte[byteslen];
 		dis.readFully(bytes);
 		if (keytype != type) {
-			throw new InvalidKeyException();
+			throw new InvalidKeyException("wrong glowcrypt key type");
 		}
 		return fromBytes(keylen, bytes);
 	}

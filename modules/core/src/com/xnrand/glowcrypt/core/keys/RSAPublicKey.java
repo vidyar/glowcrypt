@@ -14,7 +14,7 @@ import com.xnrand.glowcrypt.core.Base64.InputStream;
 /**
  * Class for an RSA private key in glowcrypt
  * 
- * @author xnrand <http://xnrand.com> <https://github.com/xnrand>
+ * @author xnrand <http://xnrand.com/> <https://github.com/xnrand>
  */
 public final class RSAPublicKey extends GlowKey<PublicKey> {
 
@@ -36,7 +36,8 @@ public final class RSAPublicKey extends GlowKey<PublicKey> {
 	}
 
 	/**
-	 * get {@link RSAPublicKey} from an {@link InputStream} in glowcrypt's key format
+	 * get {@link RSAPublicKey} from an {@link InputStream} in glowcrypt's key
+	 * format
 	 */
 	public static RSAPublicKey readGlowKey(InputStream is) throws IOException,
 			InvalidKeyException, InvalidKeySpecException,
@@ -48,7 +49,7 @@ public final class RSAPublicKey extends GlowKey<PublicKey> {
 		byte[] bytes = new byte[byteslen];
 		dis.readFully(bytes);
 		if (keytype != type) {
-			throw new InvalidKeyException();
+			throw new InvalidKeyException("wrong glowcrypt key type");
 		}
 		return fromBytes(keylen, bytes);
 	}

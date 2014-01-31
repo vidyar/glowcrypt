@@ -9,7 +9,7 @@ import java.security.Key;
  * abstract class for all wrapped keys in glowcrypt, aiming to be more
  * convenient than java.security.*
  * 
- * @author xnrand <http://xnrand.com> <https://github.com/xnrand>
+ * @author xnrand <http://xnrand.com/> <https://github.com/xnrand>
  */
 public abstract class GlowKey<T extends Key> {
 	protected final int keylen;
@@ -42,7 +42,7 @@ public abstract class GlowKey<T extends Key> {
 	public byte[] getBytes() {
 		return key.getEncoded();
 	}
-
+	
 	/**
 	 * @return the keylen
 	 */
@@ -63,9 +63,9 @@ public abstract class GlowKey<T extends Key> {
 	public void writeGlowKey(OutputStream os) throws IOException {
 		DataOutputStream dos = new DataOutputStream(os);
 		dos.writeInt(keytype);
-		dos.write(keylen);
+		dos.writeInt(keylen);
 		byte[] keyBytes = getBytes();
-		dos.write(keyBytes.length);
+		dos.writeInt(keyBytes.length);
 		dos.write(keyBytes);
 	}
 	
