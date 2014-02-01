@@ -33,6 +33,7 @@ public class DevCLIGUIWrapper extends JFrame {
 	private JTextArea txtrOutput;
 	private JTextArea txtrInput;
 	private JTextField tfCommand;
+	private JButton btnRun;
 
 	/**
 	 * Launch the application.
@@ -72,8 +73,9 @@ public class DevCLIGUIWrapper extends JFrame {
 		lblCommand.setBounds(12, 14, 81, 15);
 		contentPane.add(lblCommand);
 
-		JButton btnRun = new JButton("Run");
+		btnRun = new JButton();
 		btnRun.setAction(runAction);
+		btnRun.setText("Run");
 		btnRun.setBounds(750, 9, 117, 25);
 		contentPane.add(btnRun);
 
@@ -100,17 +102,13 @@ public class DevCLIGUIWrapper extends JFrame {
 	}
 
 	private class RunAction extends AbstractAction {
-		public RunAction() {
-			putValue(NAME, "Run");
-			putValue(SHORT_DESCRIPTION, "Run the program");
-		}
-
 		public void actionPerformed(ActionEvent e) {
-			txtrOutput.setText("running, this could take a while, depending on the command you entered...");
-			SwingUtilities.invokeLater(new Runnable() {
+			btnRun.setEnabled(false);
+			btnRun.setText("Running...");
+			new Thread(new Runnable() {
 				@Override
 				public void run() {
-					ByteArrayOutputStream runout = new ByteArrayOutputStream();
+					final ByteArrayOutputStream runout = new ByteArrayOutputStream();
 					PrintStream runoutps = new PrintStream(runout);
 					ByteArrayInputStream runin = new ByteArrayInputStream(
 							txtrInput.getText().getBytes());
@@ -122,10 +120,17 @@ public class DevCLIGUIWrapper extends JFrame {
 						ex.printStackTrace(runoutps);
 						runoutps.print("Error: " + ex.getMessage());
 					}
-
-					txtrOutput.setText(runout.toString());
+					SwingUtilities.invokeLater(new Runnable() {
+						@Override
+						public void run() {
+							txtrOutput.setText(runout.toString());
+							btnRun.setEnabled(true);
+							btnRun.setText("Run");
+						}
+					});
+					
 				}
-			});
+			}).start();
 
 		}
 	}
