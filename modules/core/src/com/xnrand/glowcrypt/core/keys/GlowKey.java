@@ -15,12 +15,12 @@ public abstract class GlowKey<T extends Key> {
 	protected final int keylen;
 	protected final T key;
 	protected final int keytype;
-	
-	/** should <em>never</em> be changed because it will break saved keys */
+
+	/** should <em>never</em> be changed because that would break all saved keys */
 	protected static final int AESKEY = 1;
-	/** should <em>never</em> be changed because it will break saved keys */
+	/** should <em>never</em> be changed because that would break all saved keys */
 	protected static final int RSAPRIVATEKEY = 2;
-	/** should <em>never</em> be changed because it will break saved keys */
+	/** should <em>never</em> be changed because that would break all saved keys */
 	protected static final int RSAPUBLICKEY = 3;
 
 	/**
@@ -42,7 +42,7 @@ public abstract class GlowKey<T extends Key> {
 	public byte[] getBytes() {
 		return key.getEncoded();
 	}
-	
+
 	/**
 	 * @return the keylen
 	 */
@@ -68,6 +68,5 @@ public abstract class GlowKey<T extends Key> {
 		dos.writeInt(keyBytes.length);
 		dos.write(keyBytes);
 	}
-	
-	
+
 }
