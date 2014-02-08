@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.InputStream;
 
+import com.xnrand.glowcrypt.core.Glowcrypt;
 import com.xnrand.glowcrypt.core.keys.GlowKey;
 
 /**
@@ -23,18 +24,19 @@ public abstract class Cryption<TGlowKey extends GlowKey<?>> {
 	 * should <em>never</em> be changed because that would break all saved
 	 * encrypted files
 	 */
-	protected static final int AESENCRYPTED = 1;
+	protected static final int AESENCRYPTED = (Glowcrypt.FILETYPE_ENC << 16) + 0;
 	/**
 	 * should <em>never</em> be changed because that would break all saved
 	 * encrypted files
 	 */
-	protected static final int AESRSAENCRYPTED = 2;
+	protected static final int AESRSAENCRYPTED = (Glowcrypt.FILETYPE_ENC << 16) + 2;
 
 	public Cryption(TGlowKey key) {
 		this.key = key;
 	}
 
-	public void crypt(File infile, File outfile) throws FileNotFoundException, IOException {
+	public void crypt(File infile, File outfile) throws FileNotFoundException,
+			IOException {
 		FileInputStream in = new FileInputStream(infile);
 		FileOutputStream out = new FileOutputStream(outfile);
 		crypt(in, out);
@@ -48,6 +50,6 @@ public abstract class Cryption<TGlowKey extends GlowKey<?>> {
 	 * @param in
 	 * @param outfile
 	 */
-	abstract public void crypt(InputStream in, OutputStream outfile)
+	public abstract void crypt(InputStream in, OutputStream outfile)
 			throws IOException;
 }

@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.security.Key;
 
+import com.xnrand.glowcrypt.core.Glowcrypt;
+
 /**
  * abstract class for all wrapped keys in glowcrypt, aiming to be more
  * convenient than java.security.*
@@ -17,11 +19,11 @@ public abstract class GlowKey<T extends Key> {
 	protected final int keytype;
 
 	/** should <em>never</em> be changed because that would break all saved keys */
-	protected static final int AESKEY = 1;
+	protected static final int AESKEY = (Glowcrypt.FILETYPE_KEY << 16) + 1;
 	/** should <em>never</em> be changed because that would break all saved keys */
-	protected static final int RSAPRIVATEKEY = 2;
+	protected static final int RSAPRIVATEKEY = (Glowcrypt.FILETYPE_KEY << 16) + 2;
 	/** should <em>never</em> be changed because that would break all saved keys */
-	protected static final int RSAPUBLICKEY = 3;
+	protected static final int RSAPUBLICKEY = (Glowcrypt.FILETYPE_KEY << 16) + 3;
 
 	/**
 	 * Creates the key object from the {@link java.security.Key} object and the
