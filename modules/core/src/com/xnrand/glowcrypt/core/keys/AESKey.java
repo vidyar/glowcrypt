@@ -2,14 +2,13 @@ package com.xnrand.glowcrypt.core.keys;
 
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
-
-import com.xnrand.glowcrypt.core.Base64.InputStream;
 
 /**
  * Class for an AES key in glowcrypt

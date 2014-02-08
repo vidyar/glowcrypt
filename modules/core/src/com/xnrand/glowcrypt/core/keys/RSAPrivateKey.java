@@ -2,14 +2,13 @@ package com.xnrand.glowcrypt.core.keys;
 
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.security.InvalidKeyException;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
-
-import com.xnrand.glowcrypt.core.Base64.InputStream;
 
 /**
  * Class for an RSA private key in glowcrypt
