@@ -1,10 +1,13 @@
 package com.xnrand.glowcrypt.cli.dev;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.PrintStream;
 
 import com.xnrand.glowcrypt.core.Base64;
 import com.xnrand.glowcrypt.core.Glowcrypt;
+import com.xnrand.glowcrypt.core.encryption.AESEncryption;
 import com.xnrand.glowcrypt.core.keys.AESKey;
 import com.xnrand.glowcrypt.core.keys.RSAKeypair;
 import com.xnrand.glowcrypt.core.keys.RSAPrivateKey;
@@ -103,10 +106,30 @@ public class DevCLI {
 			}
 			break;
 		case "encrypt":
-			// TODO: encryption
-			break;
 		case "decrypt":
-			// TODO: decryption
+			numArgs(5);
+			File keyfile = new File(args[2]);
+			File infile = new File(args[3]);
+			File outfile = new File(args[4]);
+			FileInputStream keyfis = new FileInputStream(keyfile);
+			switch (args[1]) {
+			case "aes":
+				AESKey cryptaeskey = AESKey.readGlowKey(keyfis);
+				switch (args[0]) {
+				case "encrypt":
+					AESEncryption cryptaesen = new AESEncryption(cryptaeskey);
+					cryptaesen.crypt(infile, outfile);
+					break;
+				case "decrypt":
+					// TODO: aes decryption
+					break;
+				}
+				break;
+			case "aesrsa":
+				// TODO: aes-rsa encryption and decryption
+				break;
+			}
+			keyfis.close();
 			break;
 		case "help":
 			out.println("" + //
@@ -115,6 +138,10 @@ public class DevCLI {
 					"<> readkey rsa private\n" + //
 					"<> readkey rsa public\n" + //
 					"<> readkey aes\n" + //
+					"<> encrypt aes <keyfile> <infile> <outfile>\n" + //
+					"<> encrypt rsaaes <keyfile> <infile> <outfile>\n" + //
+					"<> decrypt aes <keyfile> <infile> <outfile>\n" + //
+					"<> decrypt rsaaes <keyfile> <infile> <outfile>\n" + //
 					"<> help");
 			break;
 		default:
