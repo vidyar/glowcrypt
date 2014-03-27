@@ -18,7 +18,7 @@
 	<target name="compile">
 		<glowcryptant />
 		<mkdir dir="${module.classes.dir}" />
-		<javac srcdir="${module.src.dir}" destdir="${module.classes.dir}" includeantruntime="false">
+		<javac target="1.7" source="1.7" srcdir="${module.src.dir}" destdir="${module.classes.dir}" includeantruntime="false">
 			<classpath>
 				<pathelement path="../core/build/classes" />
 			</classpath>
